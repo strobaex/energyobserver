@@ -107,12 +107,31 @@
 	unset($energy);
 	unset($wert);
 	
-	//Durchschnitt berechnen, ohne den ersten und letzten Wert
+	//Durchschnitt berechnen
 	$temp = $tageswerte;
-	//$temp = array_splice($temp, 1, count($temp) - 2);
-	$average_daily = array_sum($temp) / count($temp);
-	if (is_nan($average_daily))
-		$average_daily = 0.0;
+	switch (count($temp)) {
+	    case 0:
+	        //Kein Tageswert vorhanden => Durchschnitt = 0.0
+	        $average_daily = 0.0;
+	        break;
+	    case 1:
+            case 2:
+            	//Ein (also erster Erfassungstag => meist unvollständig erfasst!) Tageswert oder
+            	//zwei (also zweiter Tag, bis mind. 24:00 Uhr auch unvollständig erfasst) Tageswerte vorhanden
+            	//=> einfache Durchschnittsbildung mit dem Ergebnis das Durchschnitt sicher zu niedrig
+		$average_daily = array_sum($temp) / count($temp);
+		break;
+	    case 3:
+		//Drei Tageswerte erfasst, d. h. 2. Tag wurde vollständig erfasst => Durchschnitt entspricht 2. Tageswert
+		$temp = array_splice($temp, 1, 1);
+		$average_daily = array_sum($temp) / count($temp);
+		break;
+	    default:
+		//Mehrere Tageswerte erfasst, d. h. nach Entfernung der unvollständig erfassten Tageswerte
+            	//für den ersten und den letzten Tag Durchschnitt über restliche Tageswerte bilden  
+		$temp = array_splice($temp, 1, count($temp) - 2);
+		$average_daily = array_sum($temp) / count($temp);
+	}
 	
 	// Monatswerte berechnen, dabei nur vollständig erfasste Tage berücksichtigen
 	foreach ($temp as $key => $value) {
