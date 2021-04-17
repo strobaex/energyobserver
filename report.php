@@ -85,11 +85,11 @@
 			}
 		}
 		//Hochrechnung des Tageswerts, für den ersten und letzten Erfassungstag, da diese nicht vollständig erfasst wurden
-        if ($midnight <= $startdatum) {
-            //Erster Erfassungstag
-            $max_distances = 24 / $distance;
-            $energy = ($energy/$zaehler)*$max_distances;
-        }
+        	/*if ($midnight <= $startdatum) {
+        		//Erster Erfassungstag
+	        	$max_distances = 24 / $distance;
+            		$energy = ($energy/$zaehler)*$max_distances;
+        	}*/
 		/*if ($enddatum <= $midnight_tomorrow) {
 			//Letzter Erfassungstag
 			$max_distances = 24 / $distance;
@@ -346,7 +346,7 @@
 <script>
     function closeModal() {
         $('#config').modal('hide');
-        location.reload(true);
+        window.location.href = window.location.href;
     }
 
     function save_config() {
@@ -411,7 +411,7 @@
                     var cell3 = row.insertCell(2);
                     var cell4 = row.insertCell(3);
 
-                    cell1.innerHTML = ip;
+                    cell1.innerHTML = '<a href="http://' + ip + ' " target="_blank" >' + ip + '</a>';
                     cell2.innerHTML = data[i]['Shelly-Typ'];
                     cell3.innerHTML = data[i]['Name'];
                     cell4.innerHTML = '<button class="btn btn-lg" type="button" id ="delete_row" onclick = "deleteRow(this)"><i class="fas fa-trash"></i></button>';
@@ -486,7 +486,7 @@
 	{
 		if (!empty($a)) {
 			foreach ($a as $key => $item) {
-				//$item = (array_slice($item, 1));
+				$item['IP'] = '<a href="http://' . $item['IP'] .' " target="_blank" >' . $item['IP'] . '</a>';
 				unset($item['filename']);
 				$a[$key] = $item;
 			}
