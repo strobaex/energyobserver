@@ -346,7 +346,11 @@
 <script>
     function closeModal() {
         $('#config').modal('hide');
-        window.location.href = window.location.href;
+        let data = new FormData();
+        data.append("filename", "'<?= $filename ?>");
+        let request = new XMLHttpRequest();
+        request.open('POST', 'report.php');
+        request.send(data);
     }
 
     function save_config() {
