@@ -14,5 +14,5 @@ Hinweis:
 - Bitte installieren Sie das Paket php-curl.
 - Bitte legen Sie die beiden Dateien in ein vom Web-Server erreichbares Verzeichnis ab.
 - Bitte die Datei index.php als cronjob in die crontab eintragen. Diese Datei liest periodisch die aktuelle Leistungsaufnahme der konfigurierten Shellys aus und speichert diese in je einer Datei je Shelly. Ein möglicher Eintrag kann wie folgt aussehen:<br>
-*/15 * * * * /usr/bin/curl http://Ihr_Webserver/Verzeichnis_mit_den_Dateien/index.php
+*/10 * * * * /usr/bin/curl http://Ihr_Webserver/Verzeichnis_mit_den_Dateien/index.php
 - Rufen Sie EnergyObserver auf http://Ihr_Webserver/Verzeichnis_mit_den_Dateien/report.php und konfigurieren Sie Ihre Shelly PM-Devices
