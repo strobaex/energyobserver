@@ -47,9 +47,11 @@
 		$shellys[$key]['filename'] = str_replace('.', '', $single_shelly['IP']) . '_' . str_replace(' ', '_', $single_shelly['Name']) . '.html';
 	}
 	
-	if ($_POST['filename'])
+	$temp = in_array($_POST['filename'],array_column($shellys, 'filename'));
+ 
+	if (isset($_POST['filename']) && $temp == true)
 		$filename = $_POST['filename'];
-	else if ($_POST['anzeige'])
+	else if (isset($_POST['anzeige']))
 		$filename = substr(strstr($_POST['anzeige'], "_"), 1);
 	else $filename = $shellys[0]['filename'];
 	
@@ -276,7 +278,10 @@
 									<?php endif; ?>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Zurück</button>
+				    <form id="CloseModal" action="report.php" method="post">
+                                        <input id="CloseModal-filename" type="text" name="filename" value="" hidden>
+                                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Zurück</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -345,12 +350,10 @@
 <script src="https://cdn.jsdelivr.net/npm/table-to-json@1.0.0/lib/jquery.tabletojson.min.js" integrity="sha256-H8xrCe0tZFi/C2CgxkmiGksqVaxhW0PFcUKZJZo1yNU=" crossorigin="anonymous"></script>
 <script>
     function closeModal() {
-        $('#config').modal('hide');
-        let data = new FormData();
-        data.append("filename", "'<?= $filename ?>");
-        let request = new XMLHttpRequest();
-        request.open('POST', 'report.php');
-        request.send(data);
+        list = document.getElementsByClassName("btn-success");
+        filename = list[2].value;
+        document.getElementById("CloseModal-filename").value = filename;
+        document.getElementById("CloseModal").submit();
     }
 
     function save_config() {
